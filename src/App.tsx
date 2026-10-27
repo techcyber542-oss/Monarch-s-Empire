@@ -112,7 +112,8 @@ export default function App() {
 
   useEffect(() => {
     if (!supabase || !supabaseConfigured) { setSessionReady(true); setConnectionStatus('demo'); return }
-    let alive = true
+    const client = supabase
+let alive = true
     const boot = async () => {
       setConnectionStatus('connecting')
       const { data: { session } } = await supabase.auth.getSession()
