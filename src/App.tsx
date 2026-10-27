@@ -6,7 +6,7 @@ import {
   Plus, Search, Send, Settings, Shield, ShieldAlert, Smile, Sparkles, Sticker,
   Trash2, Users, X, Zap, PanelLeftClose, AtSign
 } from 'lucide-react'
-import { supabase, supabaseConfigured } from './lib/supabase'
+import { supabase, supabaseConfigured } from './supabase'
 
 type Profile = {
   id: string
