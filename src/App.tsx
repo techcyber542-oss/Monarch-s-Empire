@@ -377,7 +377,7 @@ export default function App() {
           <div className="day-divider"><span/><div><Sparkles size={12}/> THE CHRONICLES BEGIN</div><span/></div>
           {filteredMessages.length === 0 ? <div className="empty-state"><div className="empty-emblem"><MessageCircle size={28}/></div><h3>{searchText ? 'No messages found' : 'A quiet realm… for now.'}</h3><p>{searchText ? 'Try another search term.' : 'Be the first to leave your mark on these chronicles.'}</p></div> : filteredMessages.map((m, index) => {
             const own = m.user_id === profile?.id
-            const p = m.profile || { display_name: 'Unknown Monarch', username: 'unknown', avatar_effect: 'aura' }
+            const p: Partial<Profile> = m.profile || { display_name: 'Unknown Monarch', username: 'unknown', avatar_effect: 'aura' }
             const grouped = index > 0 && filteredMessages[index - 1].user_id === m.user_id && Date.now() - new Date(filteredMessages[index - 1].created_at).getTime() < 5 * 60 * 1000
             const isSticker = m.content.startsWith('[[sticker:')
             const stickerEmoji = isSticker ? m.content.slice(10, -2) : ''
