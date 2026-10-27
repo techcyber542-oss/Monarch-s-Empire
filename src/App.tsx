@@ -167,7 +167,7 @@ let alive = true
         if (alive && status === 'SUBSCRIBED') setConnectionStatus('live')
         if (alive && status === 'CHANNEL_ERROR') setConnectionStatus('offline')
       })
-    return () => { alive = false; void client.removeChannel(channel) }
+     return () => { alive = false; void client.removeChannel(channel) }
   }, [activeRoom, profile])
 
   useEffect(() => {
