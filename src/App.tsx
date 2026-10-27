@@ -116,14 +116,14 @@ export default function App() {
 let alive = true
     const boot = async () => {
       setConnectionStatus('connecting')
-      const { data: { session } } = await supabase.auth.getSession()
+      const { data: { session } } = await client.auth.getSession()
       if (!alive) return
       if (session?.user) {
-        const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle()
+        const { data } = await client.from('profiles').select('*').eq('id', session.user.id).maybeSingle()
         if (data) setProfile(data as Profile)
         else {
           const newProfile = { id: session.user.id, username: `monarch_${session.user.id.slice(0, 6)}`, display_name: 'New Monarch', avatar_url: null, banner_url: null, avatar_effect: 'aura', role: 'member', status: 'New to the realm' }
-          const { data: inserted } = await supabase.from('profiles').upsert(newProfile).select().single()
+          const { data: inserted } = await client.from('profiles').upsert(newProfile).select().single()
           if (inserted) setProfile(inserted as Profile)
         }
       }
