@@ -136,9 +136,10 @@ let alive = true
 
   useEffect(() => {
     if (!supabase || !supabaseConfigured || !profile) return
+    const client = supabase
     let alive = true
     const load = async () => {
-      const { data, error } = await supabase.from('messages')
+      const { data, error } = await client.from('messages')
         .select('id, room_id, user_id, content, created_at, edited_at, deleted_at, profiles(id, username, display_name, avatar_url, banner_url, avatar_effect, role, status)')
         .eq('room_id', activeRoom).is('deleted_at', null).order('created_at', { ascending: true }).limit(150)
       if (!alive) return
@@ -148,10 +149,10 @@ let alive = true
       }
     }
     void load()
-    const channel = supabase.channel(`room:${activeRoom}`)
+    const channel = client.channel(`room:${activeRoom}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `room_id=eq.${activeRoom}` }, async payload => {
         const m = payload.new as ChatMessage
-        const { data: p } = await supabase.from('profiles').select('*').eq('id', m.user_id).maybeSingle()
+        const { data: p } = await client.from('profiles').select('*').eq('id', m.user_id).maybeSingle()
         if (alive) setMessages(prev => prev.some(x => x.id === m.id) ? prev : [...prev, { ...m, profile: p as Profile }])
       })
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages', filter: `room_id=eq.${activeRoom}` }, payload => {
